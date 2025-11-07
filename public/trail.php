@@ -1,4 +1,5 @@
 <?php 
+
 require_once "../includes/db.php"; 
 require_once "../includes/header.php"; 
 
@@ -57,653 +58,808 @@ function getDifficultyClass($difficulty) {
 <body>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-    }
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 50%, #2d5a7b 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
 
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-            radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 40%);
-        pointer-events: none;
-        z-index: 0;
-    }
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 15% 25%, rgba(34, 197, 94, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: breathe 8s ease-in-out infinite;
+}
 
-    .breadcrumb {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px 20px 20px;
-        position: relative;
-        z-index: 2;
-    }
+@keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
 
-    .breadcrumb-nav {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #d1fae5;
-        font-size: 0.95rem;
-        flex-wrap: wrap;
-    }
+.breadcrumb {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 20px;
+    position: relative;
+    z-index: 2;
+}
 
-    .breadcrumb-nav a {
-        color: #6ee7b7;
-        text-decoration: none;
-        transition: color 0.3s ease;
-        font-weight: 600;
-    }
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(209, 250, 229, 0.9);
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+}
 
-    .breadcrumb-nav a:hover {
-        color: #10b981;
-    }
+.breadcrumb-nav a {
+    color: #6ee7b7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
 
-    .breadcrumb-nav span {
-        opacity: 0.6;
-    }
+.breadcrumb-nav a:hover {
+    color: #10b981;
+    background: rgba(110, 231, 183, 0.1);
+}
 
-    .trail-hero {
-        position: relative;
-        height: 500px;
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        overflow: hidden;
-        margin-bottom: -100px;
-    }
+.breadcrumb-nav span {
+    opacity: 0.5;
+}
 
-    .trail-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-            radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 50%),
-            radial-gradient(circle at 70% 60%, rgba(255,255,255,0.1) 0%, transparent 50%);
-    }
+.trail-hero {
+    position: relative;
+    height: 550px;
+    background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+    overflow: hidden;
+    margin-bottom: -120px;
+}
 
-    .trail-hero-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.5;
-        position: relative;
-        z-index: 2;
-    }
+.trail-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 25% 35%, rgba(255,255,255,0.12) 0%, transparent 45%),
+        radial-gradient(circle at 75% 65%, rgba(255,255,255,0.08) 0%, transparent 45%);
+    animation: heroShimmer 10s ease-in-out infinite;
+}
 
-    .trail-hero-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 60px 20px 140px;
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-        z-index: 3;
-    }
+@keyframes heroShimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
 
-    .trail-hero-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        color: white;
-    }
+.trail-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    position: relative;
+    z-index: 2;
+}
 
-    .trail-hero-badges {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-    }
+.trail-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 60px 20px 150px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    z-index: 3;
+}
 
-    .hero-badge {
-        padding: 8px 20px;
-        border-radius: 25px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255,255,255,0.3);
-    }
+.trail-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    color: white;
+}
 
-    .badge-difficulty {
-        background: rgba(251, 191, 36, 0.95);
-    }
+.trail-hero-badges {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
 
-    .badge-difficulty.easy {
-        background: rgba(34, 197, 94, 0.95);
-    }
+.hero-badge {
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
 
-    .badge-difficulty.hard {
-        background: rgba(239, 68, 68, 0.95);
-    }
+.hero-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
 
-    .badge-featured {
-        background: rgba(249, 115, 22, 0.95);
-    }
+.badge-difficulty {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(245, 158, 11, 0.95));
+}
 
-    .trail-hero-content h1 {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 15px;
-        text-shadow: 3px 3px 20px rgba(0,0,0,0.5);
-        line-height: 1.2;
-    }
+.badge-difficulty.easy {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.95));
+}
 
-    .trail-location {
-        font-size: 1.3rem;
-        opacity: 0.95;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 25px;
-    }
+.badge-difficulty.hard {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
+}
 
-    .trail-quick-stats {
-        display: flex;
-        gap: 35px;
-        flex-wrap: wrap;
-    }
+.badge-featured {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.95), rgba(234, 88, 12, 0.95));
+}
 
-    .quick-stat {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
+.trail-hero-content h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-shadow: 2px 4px 25px rgba(0,0,0,0.6);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
 
-    .quick-stat-icon {
-        font-size: 1.8rem;
-    }
+.trail-location {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px 80px;
-        position: relative;
-        z-index: 2;
-    }
+.trail-quick-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
 
+.quick-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.quick-stat-icon {
+    font-size: 1.6rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.trail-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 35px;
+    margin-top: 140px;
+}
+
+.trail-content {
+    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+    border-radius: 28px;
+    padding: 45px;
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.12),
+        0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-size: 2.2rem;
+    color: #111827;
+    margin-bottom: 28px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    letter-spacing: -0.5px;
+}
+
+.section-title::before {
+    content: '';
+    width: 6px;
+    height: 38px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.trail-description {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: #374151;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+.trail-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 18px;
+    margin-bottom: 45px;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    padding: 24px;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid #6ee7b7;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s;
+}
+
+.feature-card:hover::before {
+    left: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.35);
+    border-color: #10b981;
+}
+
+.feature-icon {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.feature-label {
+    font-weight: 800;
+    color: #065f46;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+.trail-highlights {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.12));
+    padding: 35px;
+    border-radius: 20px;
+    border-left: 6px solid #10b981;
+    margin-bottom: 45px;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08);
+}
+
+.highlights-title {
+    font-size: 1.5rem;
+    color: #065f46;
+    font-weight: 900;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.3px;
+}
+
+.highlights-list {
+    list-style: none;
+    display: grid;
+    gap: 18px;
+}
+
+.highlights-list li {
+    display: flex;
+    align-items: start;
+    gap: 14px;
+    color: #1f2937;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-weight: 500;
+}
+
+.highlights-list li::before {
+    content: '✓';
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+}
+
+.trail-gallery {
+    margin-bottom: 40px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item {
+    aspect-ratio: 4/3;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 50px rgba(16, 185, 129, 0.3);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.trail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sidebar-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 
+        0 15px 45px rgba(0,0,0,0.1),
+        0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.sidebar-card:hover {
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.15),
+        0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    color: #111827;
+    margin-bottom: 25px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+}
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(16, 185, 129, 0.1));
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.stat-item:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.18));
+    transform: translateX(6px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+}
+
+.stat-label {
+    font-weight: 700;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-label-icon {
+    font-size: 1.4rem;
+}
+
+.stat-value {
+    font-weight: 900;
+    color: #059669;
+    font-size: 1.2rem;
+    letter-spacing: -0.3px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 32px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 350px;
+    height: 350px;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(16, 185, 129, 0.08);
+    color: #059669;
+    border: 2px solid #10b981;
+}
+
+.btn-secondary:hover {
+    background: rgba(16, 185, 129, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+}
+
+.rating-card {
+    text-align: center;
+}
+
+.rating-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #059669;
+    margin-bottom: 12px;
+    display: block;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 10px rgba(5, 150, 105, 0.2);
+}
+
+.rating-stars {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+    color: #fbbf24;
+    filter: drop-shadow(0 2px 6px rgba(251, 191, 36, 0.3));
+}
+
+.rating-count {
+    color: #6b7280;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.weather-widget {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.weather-widget::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: weatherPulse 4s ease-in-out infinite;
+}
+
+@keyframes weatherPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.3; }
+}
+
+.weather-icon {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    position: relative;
+    z-index: 1;
+}
+
+.weather-temp {
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -1px;
+}
+
+.weather-desc {
+    opacity: 0.95;
+    font-size: 1.1rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+.tips-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tips-list li {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    color: #374151;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    font-weight: 500;
+    padding: 12px;
+    background: rgba(16, 185, 129, 0.04);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.tips-list li:hover {
+    background: rgba(16, 185, 129, 0.1);
+    transform: translateX(4px);
+}
+
+.tips-list li::before {
+    content: '💡';
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.trail-hero-image-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.trail-hero-image-container::before {
+    content: '🏔️';
+    position: absolute;
+    font-size: 140px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.15;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-20px); }
+}
+
+@media (max-width: 968px) {
     .trail-main-grid {
-        display: grid;
-        grid-template-columns: 1fr 380px;
-        gap: 40px;
-        margin-top: 120px;
+        grid-template-columns: 1fr;
+        margin-top: 100px;
     }
-
-    .trail-content {
-        background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
-        border-radius: 25px;
-        padding: 40px;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
+    
+    .trail-hero-content h1 {
+        font-size: 2.8rem;
     }
-
-    .section-title {
-        font-size: 2rem;
-        color: #1f2937;
-        margin-bottom: 25px;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 12px;
+    
+    .trail-hero {
+        height: 500px;
+        margin-bottom: -80px;
     }
-
-    .section-title::before {
-        content: '';
-        width: 5px;
-        height: 35px;
-        background: linear-gradient(135deg, #10b981, #059669);
-        border-radius: 3px;
+    
+    .trail-hero-overlay {
+        padding: 50px 20px 120px;
     }
-
-    .trail-description {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #4b5563;
-        margin-bottom: 35px;
+    
+    .trail-quick-stats {
+        gap: 24px;
     }
-
-    .trail-features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-
-    .feature-card {
-        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-        padding: 20px;
-        border-radius: 18px;
-        text-align: center;
-        border: 2px solid #6ee7b7;
-        transition: all 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-    }
-
-    .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-        display: block;
-    }
-
-    .feature-label {
-        font-weight: 700;
-        color: #065f46;
+    
+    .quick-stat {
         font-size: 0.95rem;
     }
-
-    .trail-highlights {
-        background: rgba(16, 185, 129, 0.08);
-        padding: 30px;
-        border-radius: 18px;
-        border-left: 5px solid #10b981;
-        margin-bottom: 40px;
-    }
-
-    .highlights-title {
-        font-size: 1.4rem;
-        color: #065f46;
-        font-weight: 800;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .highlights-list {
-        list-style: none;
-        display: grid;
-        gap: 15px;
-    }
-
-    .highlights-list li {
-        display: flex;
-        align-items: start;
-        gap: 12px;
-        color: #1f2937;
-        font-size: 1.05rem;
-        line-height: 1.6;
-    }
-
-    .highlights-list li::before {
-        content: '✓';
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        font-weight: 700;
-        font-size: 0.9rem;
-    }
-
-    .trail-gallery {
-        margin-bottom: 40px;
-    }
-
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-
-    .gallery-item {
-        aspect-ratio: 4/3;
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .gallery-item:hover {
-        transform: scale(1.05);
-        box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .trail-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-
+    
     .sidebar-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
-        border-radius: 25px;
-        padding: 35px;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
+        padding: 32px;
     }
+}
 
-    .sidebar-title {
-        font-size: 1.5rem;
-        color: #1f2937;
-        margin-bottom: 25px;
-        font-weight: 800;
+@media (max-width: 640px) {
+    .trail-content {
+        padding: 28px;
+        border-radius: 24px;
     }
-
-    .stats-list {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+    
+    .section-title {
+        font-size: 1.75rem;
     }
-
-    .stat-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        background: rgba(16, 185, 129, 0.08);
-        border-radius: 12px;
-        transition: all 0.3s ease;
+    
+    .trail-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
     }
-
-    .stat-item:hover {
-        background: rgba(16, 185, 129, 0.15);
-        transform: translateX(5px);
+    
+    .trail-hero {
+        height: 420px;
     }
-
-    .stat-label {
-        font-weight: 600;
-        color: #4b5563;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    
+    .trail-hero-content h1 {
+        font-size: 2.2rem;
     }
-
-    .stat-label-icon {
-        font-size: 1.3rem;
-    }
-
-    .stat-value {
-        font-weight: 800;
-        color: #059669;
+    
+    .trail-location {
         font-size: 1.15rem;
     }
-
-    .action-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+    
+    .quick-stat {
+        font-size: 0.9rem;
+        padding: 6px 12px;
     }
-
-    .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 16px 28px;
-        border-radius: 30px;
-        font-weight: 700;
-        font-size: 1.05rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
+    
+    .quick-stat-icon {
+        font-size: 1.4rem;
     }
-
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
+    
+    .trail-hero-badges {
+        gap: 8px;
     }
-
-    .btn:hover::before {
-        width: 300px;
-        height: 300px;
+    
+    .hero-badge {
+        padding: 8px 18px;
+        font-size: 0.8rem;
     }
-
-    .btn span {
-        position: relative;
-        z-index: 1;
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+    
+    .breadcrumb {
+        padding: 22px 20px 16px;
     }
-
-    .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    
+    .breadcrumb-nav {
+        font-size: 0.85rem;
     }
-
-    .btn-secondary {
-        background: rgba(16, 185, 129, 0.1);
-        color: #059669;
-        border: 2px solid #10b981;
+    
+    .sidebar-card {
+        padding: 28px;
     }
-
-    .btn-secondary:hover {
-        background: rgba(16, 185, 129, 0.2);
-        transform: translateY(-3px);
-    }
-
-    .rating-card {
-        text-align: center;
-    }
-
+    
     .rating-number {
         font-size: 3.5rem;
-        font-weight: 800;
-        color: #059669;
-        margin-bottom: 10px;
-        display: block;
     }
-
-    .rating-stars {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        display: block;
-        color: #fbbf24;
-    }
-
-    .rating-count {
-        color: #6b7280;
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .weather-widget {
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        color: white;
-        padding: 25px;
-        border-radius: 18px;
-        text-align: center;
-    }
-
-    .weather-icon {
-        font-size: 3rem;
-        margin-bottom: 10px;
-    }
-
-    .weather-temp {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 5px;
-    }
-
-    .weather-desc {
-        opacity: 0.9;
-        font-size: 1.05rem;
-    }
-
-    .tips-list {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .tips-list li {
-        display: flex;
-        align-items: start;
-        gap: 12px;
-        color: #4b5563;
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
-
-    .tips-list li::before {
-        content: '💡';
-        font-size: 1.2rem;
-        flex-shrink: 0;
-    }
-
-    .trail-hero-image-container {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
+    
     .trail-hero-image-container::before {
-        content: '🏔️';
-        position: absolute;
-        font-size: 120px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0.2;
-        z-index: 1;
+        font-size: 100px;
     }
-
-    @media (max-width: 968px) {
-        .trail-main-grid {
-            grid-template-columns: 1fr;
-            margin-top: 80px;
-        }
-
-        .trail-hero-content h1 {
-            font-size: 2.5rem;
-        }
-
-        .trail-hero {
-            height: 450px;
-            margin-bottom: -60px;
-        }
-
-        .trail-hero-overlay {
-            padding: 40px 20px 100px;
-        }
-
-        .trail-quick-stats {
-            gap: 20px;
-        }
-
-        .quick-stat {
-            font-size: 1rem;
-        }
-
-        .sidebar-card {
-            padding: 30px;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .trail-content {
-            padding: 25px;
-        }
-
-        .section-title {
-            font-size: 1.6rem;
-        }
-
-        .trail-features-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .trail-hero {
-            height: 380px;
-        }
-
-        .trail-hero-content h1 {
-            font-size: 2rem;
-        }
-
-        .trail-location {
-            font-size: 1.1rem;
-        }
-
-        .quick-stat {
-            font-size: 0.9rem;
-        }
-
-        .quick-stat-icon {
-            font-size: 1.5rem;
-        }
-
-        .trail-hero-badges {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .hero-badge {
-            padding: 6px 16px;
-            font-size: 0.85rem;
-        }
-
-        .gallery-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .breadcrumb {
-            padding: 20px 20px 15px;
-        }
-
-        .breadcrumb-nav {
-            font-size: 0.85rem;
-        }
-
-        .sidebar-card {
-            padding: 25px;
-        }
-
-        .rating-number {
-            font-size: 3rem;
-        }
-    }
+}
 </style>
 
 <div class="breadcrumb">
