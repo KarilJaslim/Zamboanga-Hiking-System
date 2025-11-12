@@ -8,6 +8,7 @@
 define('SITE_NAME', 'Zamboanga Hiking System');
 define('SITE_DESCRIPTION', 'Explore the best hiking trails in Zamboanga');
 define('SITE_URL', 'http://localhost/ZAMBOANGAHIKINGSYSTEM');
+define('BASE_URL', 'http://localhost/ZAMBOANGAHIKINGSYSTEM/public/');
 
 // Database Configuration (if not already in db.php)
 // define('DB_HOST', 'localhost');
@@ -16,7 +17,7 @@ define('SITE_URL', 'http://localhost/ZAMBOANGAHIKINGSYSTEM');
 // define('DB_PASS', '');
 
 // File Upload Settings
-define('UPLOAD_DIR', __DIR__ . '/../assets/uploads/');
+define('UPLOAD_DIR', __DIR__ . '/../public/assets/uploads/');
 define('MAX_FILE_SIZE', 5242880); // 5MB in bytes
 define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 
